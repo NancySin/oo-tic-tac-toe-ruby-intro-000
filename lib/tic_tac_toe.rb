@@ -93,7 +93,8 @@ class TicTacToe
           end
 
         def over?
-          if won? && full?
+          binding.pry
+          if won? && full? 
             true
           end
         end
