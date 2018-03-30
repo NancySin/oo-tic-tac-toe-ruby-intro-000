@@ -23,3 +23,86 @@ def display_board
   puts "-----------"
   puts " #{@board[6]} | #{@board[7]} | #{@board[8]} "
    end
+
+   def input_to_index(user_input)
+     user_input.to_i - 1
+   end
+
+   def move(index, token = "X")
+     @board[index] = token
+   end
+
+   def position_taken?(index)
+     !(@board[index].nil? || @board[index] == " ")
+   end
+
+   def valid_move?(index)
+     if index.between?(0, 8)
+        if !(position_taken?(index))
+          true
+        else
+          false
+        end
+      else
+        false
+      end
+    end
+
+    def turn_count
+      turn_counter = 0
+      @board.each do |space|
+        if space == "X" || space =="O"
+          turn_counter += 1
+        end
+      end
+        turn_counter
+      end
+
+        def current_player
+          turn_count.even? ? "X" : "O"
+        end
+        def turn
+          puts "Pleae enter 1-9:"
+          user_input = gets.strip
+          index = input_to_index(user_input)
+          if valid_move?(index)
+            move(index, current_player)
+            display_board
+          else
+            turn
+          end
+        end
+          def won?
+            WIN_COMBINATIONS.detect do |win_combination|
+              @board[win_combination[0]] == @board[win_combination[1]] &&
+              @board[win_combination[1]] == @board[win_combination[2]] &&
+              position_taken?(win_combination[0])
+            end
+          end
+          def full?
+            @board.none? do |index|
+              index == nil || index == " "
+            end
+          end
+          def draw?
+            if !won? && full?
+              true
+            end
+          end
+          def winner
+            if won?
+              @board[won?[0]]
+            end
+          end
+          def play
+            until over?
+              turn
+            end
+            if won?
+              puts " Congratudaltions #{winner}!"
+            else if draw?
+              puts " Cat's Game!"
+            end
+          end
+            
+        end
